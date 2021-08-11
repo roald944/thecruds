@@ -49,6 +49,7 @@ namespace thecruds
             this.txtcontact = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.lblMinimize = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblClose
@@ -124,9 +125,9 @@ namespace thecruds
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(297, 224);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(79, 21);
+            this.label3.Size = new System.Drawing.Size(87, 21);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Register :";
+            this.label3.Text = "Password :";
             // 
             // showpassword
             // 
@@ -249,12 +250,24 @@ namespace thecruds
             this.lblMinimize.Click += new System.EventHandler(this.lblMinimize_Click);
             this.lblMinimize.MouseHover += new System.EventHandler(this.lblMinimize_MouseHover);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(486, 529);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 31);
+            this.btnDelete.TabIndex = 20;
+            this.btnDelete.Text = "DELETE ALL";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // Login
             // 
+            this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(573, 572);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.lblMinimize);
             this.Controls.Add(this.lblClose);
             this.Controls.Add(this.txtcontact);
@@ -312,6 +325,7 @@ namespace thecruds
         private System.Windows.Forms.TextBox txtcontact;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblMinimize;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
 

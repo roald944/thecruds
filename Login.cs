@@ -101,6 +101,18 @@ namespace thecruds
         }
 
         //! Function For Loggin in
+        public void user_online()
+        {
+            DBConnect db = new DBConnect();
+            string username = txtuser.Text;
+            string update_online = "UPDATE login_users SET my_status = @mystatus WHERE my_username = @username";
+            MySqlCommand cmd_update = new MySqlCommand(update_online, db.connection);
+            cmd_update.Parameters.Add("@mystatus", MySqlDbType.VarChar).Value = "Online";
+            cmd_update.Parameters.Add("@username", MySqlDbType.VarChar).Value = username;
+            db.OpenConnection();
+            cmd_update.ExecuteNonQuery();
+            db.CloseConnection();
+        }
         public Boolean userLogin()
         {
             DBConnect db = new DBConnect();
@@ -113,8 +125,9 @@ namespace thecruds
             cmd_login.Parameters.Add("@password", MySqlDbType.VarChar).Value = password;
             MySqlDataReader reader;
             reader = cmd_login.ExecuteReader();
-            if (reader.Read() == true)
+            if (reader.Read())
             {
+                user_online();
                 return true;
             }
             else
@@ -122,20 +135,9 @@ namespace thecruds
                 return false;
             }
         }
-        public void user_online()
-        {
-            DBConnect db = new DBConnect();
-            string username = txtuser.Text;
-            string update_online = "UPDATE login_users SET my_status = @mystatus WHERE my_username = @username";
-            MySqlCommand cmd_update = new MySqlCommand(update_online,db.connection);
-            cmd_update.Parameters.Add("@mystatus", MySqlDbType.VarChar).Value = "Online";
-            cmd_update.Parameters.Add("@username",MySqlDbType.VarChar).Value = username;
-            db.OpenConnection();
-            cmd_update.ExecuteNonQuery();
-            db.CloseConnection();
-        }
+
         //! Function for Ceating account
-        public void createuser()
+        public Boolean createuser()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             int length = 6;
@@ -145,7 +147,7 @@ namespace thecruds
             //! input variables
             string myid = date_id + randomString;
             string username = txtuser.Text;
-            string password = txtuser.Text;
+            string password = txtpass.Text;
             string user_status = "Offline";
             string lastname = txtlname.Text;
             string firstname = txtfname.Text;
@@ -166,15 +168,11 @@ namespace thecruds
             createcmd.Parameters.Add("@middlename", MySqlDbType.VarChar).Value = middlename;
             createcmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
             createcmd.Parameters.Add("@contact", MySqlDbType.VarChar).Value = contact;
-            if (createcmd.ExecuteNonQuery() == 1)
-            {
-                string msg = "User " + txtuser.Text + ", has been created succesfully!";
-                string msgTitle = "Create Account Success";
-                MessageBox.Show(msg, msgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            createcmd.ExecuteNonQuery();
             db.CloseConnection();
+            return true;
         }
-
+        //! username duplicates sends an error
         public Boolean clarify()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -230,10 +228,10 @@ namespace thecruds
                 if (userLogin())
                 {
                     string username = txtuser.Text;
-                    user_online();
                     string msg = "User Found";
                     string msgTitle = "Login Success!";
                     MessageBox.Show(msg, msgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Hide();
                     UserForm toUserForm = new UserForm(username);
                     toUserForm.ShowDialog();
                 }
@@ -264,7 +262,12 @@ namespace thecruds
                 }
                 else
                 {
-                    createuser();
+                    if (createuser() == true)
+                    {
+                        string msg = "User " + txtuser.Text + ", has been created succesfully!";
+                        string msgTitle = "Create Account Success";
+                        MessageBox.Show(msg, msgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
         }
@@ -273,6 +276,7 @@ namespace thecruds
         private void lblClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
+            this.Close();
         }
 
         private void lblClose_MouseHover(object sender, EventArgs e)
@@ -301,6 +305,17 @@ namespace thecruds
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DBConnect db = new DBConnect();
+            db.OpenConnection();
+            string Dlete = "DELETE FROM login_users; DELETE FROM info_users";
+            MySqlCommand cmd_delete = new MySqlCommand(Dlete, db.connection);
+            cmd_delete.ExecuteNonQuery();
+            db.CloseConnection();
+            MessageBox.Show("Database Cleared", "Database Cleared", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

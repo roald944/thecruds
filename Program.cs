@@ -16,7 +16,7 @@ namespace thecruds
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login MyMain = new Login();
+            AdminForm MyMain = new AdminForm();
             Application.Run(MyMain);
         }
     }

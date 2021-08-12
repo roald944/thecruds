@@ -43,6 +43,8 @@ namespace thecruds
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtsearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.set_mystatus = new System.Windows.Forms.Button();
+            this.txtChoose_status = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblLoggedUser
@@ -166,11 +168,37 @@ namespace thecruds
             this.label2.TabIndex = 8;
             this.label2.Text = "Search :";
             // 
+            // set_mystatus
+            // 
+            this.set_mystatus.Location = new System.Drawing.Point(139, 140);
+            this.set_mystatus.Name = "set_mystatus";
+            this.set_mystatus.Size = new System.Drawing.Size(91, 25);
+            this.set_mystatus.TabIndex = 9;
+            this.set_mystatus.Text = "Set Status";
+            this.set_mystatus.UseVisualStyleBackColor = true;
+            this.set_mystatus.Click += new System.EventHandler(this.set_mystatus_Click);
+            // 
+            // txtChoose_status
+            // 
+            this.txtChoose_status.FormattingEnabled = true;
+            this.txtChoose_status.Items.AddRange(new object[] {
+            "Online",
+            "Offline",
+            "Away",
+            "Busy"});
+            this.txtChoose_status.Location = new System.Drawing.Point(12, 140);
+            this.txtChoose_status.Name = "txtChoose_status";
+            this.txtChoose_status.Size = new System.Drawing.Size(121, 25);
+            this.txtChoose_status.TabIndex = 10;
+            this.txtChoose_status.Text = "Select Status";
+            // 
             // UserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(663, 446);
+            this.Controls.Add(this.txtChoose_status);
+            this.Controls.Add(this.set_mystatus);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtsearch);
             this.Controls.Add(this.listView1);
@@ -211,5 +239,7 @@ namespace thecruds
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.TextBox txtsearch;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button set_mystatus;
+        private System.Windows.Forms.ComboBox txtChoose_status;
     }
 }

@@ -82,6 +82,21 @@ namespace thecruds
             lblLoggedUser.Text = username;
 
         }
+        public void color_rows()
+        {
+            listView1.ForeColor = Color.White;
+            foreach (ListViewItem item in listView1.Items)
+            {
+                if (item.SubItems[4].Text == "Online")
+                {
+                    item.BackColor = Color.Lime;
+                }
+                else if (item.SubItems[4].Text == "Offline")
+                {
+                    item.BackColor = Color.Red;
+                }
+            }
+        }
         //! Display Current User's Status
         public void read_user_status()
         {
@@ -118,26 +133,15 @@ namespace thecruds
                 lv.SubItems.Add(reader["CONTACT"].ToString());
                 lv.SubItems.Add(reader["STATUS"].ToString());
                 listView1.Items.Add(lv);
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                color_rows();
             }
             //reader.Close();
             //cmd_users.Dispose();
             db.CloseConnection();
         }
-        public void color_rows()
-        {
-            listView1.ForeColor = Color.White;
-            foreach (ListViewItem item in listView1.Items)
-            {
-                if (item.SubItems[4].Text == "Online")
-                {
-                    item.BackColor = Color.Lime;
-                }
-                else if (item.SubItems[4].Text == "Offline")
-                {
-                    item.BackColor = Color.Red;
-                }
-            }
-        }
+       
         private void button2_Click(object sender, EventArgs e)
         {
             DBConnect db = new DBConnect();
@@ -233,6 +237,29 @@ namespace thecruds
                 load_search();
             }
             */
+        }
+        public void update_status()
+        {
+            DBConnect db = new DBConnect();
+            string username = lblLoggedUser.Text;
+            string txtstatus = txtChoose_status.Text;
+            string update_status = "UPDATE login_users SET my_status = @c_status WHERE my_username = @username";
+            db.OpenConnection();
+            MySqlCommand cmd_update_status = new MySqlCommand(update_status,db.connection);
+            cmd_update_status.Parameters.Add("@c_status", MySqlDbType.VarChar).Value = txtstatus;
+            cmd_update_status.Parameters.Add("@username",MySqlDbType.VarChar).Value = username;
+            if (cmd_update_status.ExecuteNonQuery() == 1)
+            {
+                string msg = "User Status Updated [ "+txtstatus+" ]";
+                string msgtitle = "Status Update [ "+ txtstatus +" ]";
+                MessageBox.Show(msg,msgtitle,MessageBoxButtons.OK,MessageBoxIcon.Information);
+                load_data();
+            }
+            db.CloseConnection();
+        }
+        private void set_mystatus_Click(object sender, EventArgs e)
+        {
+            update_status();
         }
     }
 }
